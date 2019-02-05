@@ -19,6 +19,7 @@ Everyone is welcome to commit and work with the authors to add functionality. Th
 # How to use
 On first execution `python3 overseer.py` you will be asked to add:
 | Config Item | Description | Example |
+| --- | --- | ---|
 | Hostname | The name of the monitor. | google |
 | Domain | The website address, without http/https. | google.com |
 | Scan interval | The time between scans, in minutes. | 1 |
