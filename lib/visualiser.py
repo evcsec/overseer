@@ -25,7 +25,6 @@ def website_screenshot(host, target_url):
     # Super unreliable at the moment
     try:
         driver = webdriver.Firefox(executable_path='geckodriver')
-        time.sleep(9)
         print("get: " + target_url)
         driver.get(target_url)
         time.sleep(10)
