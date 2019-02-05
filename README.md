@@ -17,12 +17,14 @@ Future releases of Overseer will include:
 Everyone is welcome to commit and work with the authors to add functionality. This is a beginner friendly repository, so feel free to contact the authors, or dive straight in.
 
 # How to use
-On first execution `python3 overseer.py` you will be asked to add:
-Config Item | Description | Example
---- | --- | ---
-Hostname | The name of the monitor. | google 
-Domain | The website address, without http/https. | google.com
-Scan interval | The time between scans, in minutes. | 1
+On first execution `python3 overseer.py` you will be asked to add
+
+
+| Config Item | Description | Example |
+| --- | --- | --- |
+| Hostname | The name of the monitor. | google |
+| Domain | The website address, without http/https. | google.com |
+| Scan interval | The time between scans, in minutes. | 1 |
 
 # Credits
 @evcsec
