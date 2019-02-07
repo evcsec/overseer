@@ -7,12 +7,16 @@ from selenium.common.exceptions import TimeoutException
 from PIL import Image, ImageChops
 from .logger import write_log
 
+
 def detect_visual_changes(host, target_url):
     website_screenshot(host, target_url)
 
-    if os.path.isfile("log/scan/prev_" + host + ".png"):
+    if os.path.isfile("./log/"+host+"/scans/prev_" + host + ".png"):
+        print("prev image exists")
         check_filesize_changes(host, "log/scan/new_" + host + ".JPEG", "log/scan/prev_" + host + ".JPEG")
-        image_diff("log/scan/new_" + host + ".png", "log/scan/prev_" + host + ".png", "log/scan/diff_" + host + ".png")
+        image_diff(host, "log/scan/new_" + host + ".png", "log/scan/prev_" + host + ".png", "log/scan/diff_" + host + ".png")
+    else:
+        print("prev image does not exist")
 
     # Move new to old
     os.remove("log/scan/prev_" + host + ".png")
@@ -20,24 +24,32 @@ def detect_visual_changes(host, target_url):
     os.remove("log/scan/prev_" + host + ".JPEG")
     os.rename("log/scan/new_" + host + ".png", "log/scan/prev_" + host + ".png")
 
-
 def website_screenshot(host, target_url):
     # Super unreliable at the moment
     try:
-        driver = webdriver.Firefox(executable_path='geckodriver')
-        print("get: " + target_url)
-        driver.get(target_url)
-        time.sleep(10)
-        driver.save_screenshot()
-        driver.get_screenshot_as_png()
-        driver.quit()
+        driver_options = webdriver.ChromeOptions()
+        driver_options.add_argument('headless')
+        #driver = webdriver.Firefox(executable_path='geckodriver')
+        driver = webdriver.Chrome(options=driver_options)
+        driver.set_window_size(1024, 768)
+
+        driver.set_page_load_timeout(10)
+        try:
+            driver.get(target_url)
+            print("URL successfully Accessed")
+            driver.save_screenshot("./log/"+host+"/scans/prev_"+host+".png")
+            driver.quit()
+        except TimeoutException as e:
+            print("Page load Timeout occured. Quiting !!!")
+            driver.quit()
+
     except TimeoutException as e:
         print("[-] Error: Page load Timeout Occured.")
         write_log(host, "Error", "Page load Timeout Occured")
         driver.quit()
 
-    image = Image.open(BytesIO(png))
-    image.save("log/scan/new_" + host + ".png", "JPEG", optimize=True, quality=95)
+    #image = Image.open(BytesIO(png))
+    #image.save("log/scan/new_" + host + ".png", "JPEG", optimize=True, quality=95)
 
     
 def check_filesize_changes(host, new_image, previous_image):
@@ -51,7 +63,7 @@ def check_filesize_changes(host, new_image, previous_image):
         print('[-] Error: No visible changes, based on filesize of JPEG for ' + host + "!")
         
 
-def image_diff(new_image, previous_image, diff_image):
+def image_diff(host, new_image, previous_image, diff_image):
     im1 = Image.open(new_image)
     im2 = Image.open(previous_image)
 

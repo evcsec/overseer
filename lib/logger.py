@@ -17,8 +17,8 @@ def write_log(host, msg_type, error_string):
             print("[-] Error: File is already open... waiting until available...")
     else:
         if not os.path.exists(log_dir):
-            os.mkdir(log_dir)
-            os.mkdir(scans_dir)
+            os.makedirs(log_dir)
+            os.makedirs(scans_dir)
         
         # Wait 5 seconds... then try again
         time.sleep(5)

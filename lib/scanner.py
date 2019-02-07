@@ -5,6 +5,7 @@ from .config import update_config
 from .logger import write_log
 from .visualiser import detect_visual_changes
 
+
 def monitor(overseer_config, config_section):
     while True:
         # Run Website Scan and Port Scan
@@ -15,20 +16,21 @@ def monitor(overseer_config, config_section):
         last_scan = overseer_config.config.get(config_section, 'last_scan')
         website_hash = overseer_config.config.get(config_section, 'website_hash')
 
-        server_ip = port_scan(config_section, domain, target_ip)
-        scan_hash = web_scan(config_section, target_url, website_hash)
-        if scan_hash:
-            scan_time = get_current_datetime()
-        update_config(overseer_config, config_section, domain, target_url, server_ip, interval_time, scan_time, scan_hash)
-        # detect_visual_changes(config_section, target_url)
+        #server_ip = port_scan(config_section, domain, target_ip)
+        #scan_hash = web_scan(config_section, target_url, website_hash)
+        #if scan_hash:
+        #    scan_time = get_current_datetime()
+        #update_config(overseer_config, config_section, domain, target_url, server_ip, interval_time, scan_time, scan_hash)
+        detect_visual_changes(config_section, target_url) # un commenting for testing
         time.sleep(int(interval_time)*60)
+
 
 def port_scan(host, domain, saved_ip):
     # Set common web ports to scan
     ports = ['80', '443', '8000', '8443', '8080', '5443']
 
     # Configure default timeout period for port scans (float)
-    socket.setdefaulttimeout(1.5)
+    socket.setdefaulttimeout(2)  # was 1.5
     target_ip = socket.gethostbyname(domain)
     if target_ip != saved_ip:
         error_string = (host + " has detected an IP conflict. Original:" + saved_ip + ", New:" + target_ip)
@@ -40,13 +42,17 @@ def port_scan(host, domain, saved_ip):
 
     for port in ports:
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1) # test.png
         result = sock.connect_ex((target_ip, int(port)))
         if result == 0:
             print("\t[+] Host: " + host + " - Port {}:\tOpen".format(port))
+
+        sock.shutdown(1)
         sock.close()
     print("[+] Host: " + host + " port scan has completed.")
 
     return target_ip
+
 
 def web_scan(host, url, website_hash):
     # Initiate a scan on the given URL
@@ -93,10 +99,12 @@ def web_scan(host, url, website_hash):
         print("[-] Exception Error: " + error_string)
         print(e)
 
+
 def hash_website(website_contents):
     hash_object = hashlib.sha256(website_contents.encode('utf-8')).hexdigest()
     return hash_object
-        
+
+
 def html_diff(host, website_contents):
     diff = ""
     # Parse current website contents
