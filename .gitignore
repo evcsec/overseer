@@ -3,6 +3,8 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+.DS_Store
+
 # C extensions
 *.so
 
@@ -101,3 +103,11 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+LICENCE
+.idea
+scan_data/
+config.ini
+emailAlert.py
+geckodriver.log
+log/
