@@ -33,8 +33,8 @@ def website_screenshot(host, target_url):
     try:
         driver_options = webdriver.ChromeOptions()
         driver_options.add_argument('headless')
-        driver = webdriver.Firefox(executable_path='geckodriver')
-        # driver = webdriver.Chrome(options=driver_options)
+        # driver = webdriver.Firefox(executable_path='geckodriver')
+        driver = webdriver.Chrome(options=driver_options)
         driver.set_window_size(1024, 768)
 
         driver.set_page_load_timeout(10)
@@ -65,11 +65,13 @@ def check_filesize_changes(host, new_image, previous_image):
     latest = os.stat(new_image).st_size
     prev = os.stat(previous_image).st_size
 
+    print(latest)
+    print(prev)
     if latest != prev:
         print("[-] Error: Visible website difference detected for " + host + "!")
         write_log(host, "Error", "Difference in JPEG Comparison")
     else:
-        print('[-] Error: No visible changes, based on filesize of JPEG for ' + host + "!")
+        print('[+] No visible changes, based on filesize of jpg for ' + host + "!")
         
 
 def image_diff(host, new_image, previous_image, diff_image):
