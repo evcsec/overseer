@@ -12,11 +12,10 @@ def detect_visual_changes(host, target_url):
     website_screenshot(host, target_url)
 
     if os.path.isfile("log/" + host + "/scans/prev_" + host + ".png") and os.path.isfile("log/" + host + "/scans/prev_" + host + ".jpg"):
-        print("prev image exists")
         check_filesize_changes(host, "log/" + host + "/scans/new_" + host + ".jpg", "log/" + host + "/scans/prev_" + host + ".jpg")
         image_diff(host, "log/" + host + "/scans/new_" + host + ".png", "log/" + host + "/scans/prev_" + host + ".png", "log/" + host + "/scans/diff_" + host + ".png")
     else:
-        print("prev image does not exist")
+        print("[-] Error: No previous image does not exist")
     
     # Move new to old
     if os.path.exists("log/" + host + "/scans/prev_" + host + ".png"):
@@ -34,17 +33,17 @@ def website_screenshot(host, target_url):
         driver_options = webdriver.ChromeOptions()
         driver_options.add_argument('headless')
         # driver = webdriver.Firefox(executable_path='geckodriver')
-        driver = webdriver.Chrome(options=driver_options)
+        driver = webdriver.Chrome('/Applications/chromedriver',options=driver_options)
         driver.set_window_size(1024, 768)
 
         driver.set_page_load_timeout(10)
         try:
             driver.get(target_url)
-            print("URL successfully Accessed")
+            print("[+] URL successfully Accessed")
             screenshot = driver.save_screenshot("log/" + host + "/scans/new_" + host + ".png")
             png = driver.get_screenshot_as_png()
         except TimeoutException as e:
-            print("Page load Timeout occured. Quiting!")
+            print("[-] Error: Page load Timeout occured. Quiting!")
             driver.quit()
 
     except TimeoutException as e:

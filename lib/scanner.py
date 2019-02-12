@@ -16,12 +16,12 @@ def monitor(overseer_config, config_section):
         last_scan = overseer_config.config.get(config_section, 'last_scan')
         website_hash = overseer_config.config.get(config_section, 'website_hash')
 
+        detect_visual_changes(config_section, target_url)
         server_ip = port_scan(config_section, domain, target_ip)
         scan_hash = web_scan(config_section, target_url, website_hash)
         if scan_hash:
            scan_time = get_current_datetime()
         update_config(overseer_config, config_section, domain, target_url, server_ip, interval_time, scan_time, scan_hash)
-        detect_visual_changes(config_section, target_url) # un commenting for testing
         time.sleep(int(interval_time)*60)
 
 
@@ -71,7 +71,7 @@ def web_scan(host, url, website_hash):
             scan_hash = hash_website(str(response.json))
             # Run hash checks for the website
             if scan_hash == website_hash:
-                print('[+] Website Hash for ' + host + 'is unchanged.')
+                print('[+] Website Hash for ' + host + ' is unchanged.')
             else:
                 print('[-] Error: Website hash for ' + host + ' has changed!')
                 print('\t[-] Scan hash = ' + scan_hash)
