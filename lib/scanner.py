@@ -6,7 +6,7 @@ from .logger import write_log
 from .visualiser import detect_visual_changes
 
 
-def monitor(overseer_config, config_section):
+def monitor(system_config, overseer_config, config_section):
     while True:
         # Run Website Scan and Port Scan
         domain = overseer_config.config.get(config_section, 'domain')

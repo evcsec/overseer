@@ -1,5 +1,68 @@
 import os, configparser, validators
 
+class SystemConfig(object):
+    systemconfig = configparser.ConfigParser()
+    def __init__(self):
+        if not os.path.exists('./system.ini'):
+            self.set_targets()
+        else:
+            self.system.read("./config.ini")
+
+    def setup_system_config(self):
+        # Setup Slack, Email and Webhost config
+        while True:
+            print("[+] Enter 'y' or 'n' for each of the following:")
+            get_slack = input("<config> Would you like to configure Slack?\n> ")
+            get_email = input("<config> Would you like to configure Email Alerts?\n> ")
+            get_web = input("<config> Would you like to configure Web listener?\n> ")
+            get_chrome_driver = input("<config> Would you like to use Chrome Driver for Visual Change Detection?\n>")
+            get_gecko_driver = input("<config> Would you like to use Gecko Driver for Visual Change Detection?\n>")
+
+            if get_chrome_driver == 'y':
+                driver_location = input("<chrome config> Please enter Chrome Driver location (i.e. /Applications/ChromeDriver):\n>")
+                add_visual_driver(self, "chrome", driver_location)
+            elif get_gecko_driver == 'y':
+                driver_location = input("<gecko config> Please enter Gecko Driver location (i.e. /Applications/GeckoDriver):\n>")
+                add_visual_driver(self, "gecko", driver_location)
+            else:
+                add_visual_driver(self, "Nil", "N/A")
+
+            if get_slack == 'y':
+                slack_token = input("<slack config> Please enter Slack Token:\n>")
+                channel = input("<slack config> Please enter Channel to post alert to:\n>")
+                add_slack_config(self, slack_token, channel)
+
+            if get_email == 'y':
+                smtp_url = input("<email config> Please enter your SMTP URL:\n>")
+                send_from_email = input("<email config> Please enter your email address:\n>")
+                send_to_email = input("<email config> Please enter the email you would like to alerts sent to:\n>")
+                password = input("<email config> Please enter your email password:\n>")
+                add_email_config(self, smtp_url, send_from_email, send_to_email, password)
+
+            if get_web == 'y':
+                webhost = input("<webhost config> Please enter your web listener URL:\n>")
+                add_web_config(self, webhost)
+
+    def add_slack_config(self, slack_token, channel):
+        self.systemconfig['Slack'] = {'slack_token': slack_token, 'channel': channel}
+        self.write_file()
+    
+    def add_email_config(self, smtp_url, send_from_email, send_to_email, password):
+        self.systemconfig['Email'] = {'smtp_url': smtp_url, 'send_from_email': send_from_email,
+                                    'send_to_email': send_to_email, 'password': password}
+        self.write_file()
+
+    def add_visual_driver(self, driver_type, driver_location):
+        self.systemconfig['Visual'] = {'driver_type': driver_type, 'driver_location': driver_location}
+        self.write_file()
+
+    def add_web_config(self, url):
+        self.systemconfig['Webhost'] = {'url': url}
+        self.write_file()
+    
+    def write_file(self):
+        self.config.write(open('system.ini', 'w'))
+
 class Config(object):
     # Initialise the global config
     config = configparser.ConfigParser()
