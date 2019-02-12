@@ -16,11 +16,11 @@ def monitor(overseer_config, config_section):
         last_scan = overseer_config.config.get(config_section, 'last_scan')
         website_hash = overseer_config.config.get(config_section, 'website_hash')
 
-        #server_ip = port_scan(config_section, domain, target_ip)
-        #scan_hash = web_scan(config_section, target_url, website_hash)
-        #if scan_hash:
-        #    scan_time = get_current_datetime()
-        #update_config(overseer_config, config_section, domain, target_url, server_ip, interval_time, scan_time, scan_hash)
+        server_ip = port_scan(config_section, domain, target_ip)
+        scan_hash = web_scan(config_section, target_url, website_hash)
+        if scan_hash:
+           scan_time = get_current_datetime()
+        update_config(overseer_config, config_section, domain, target_url, server_ip, interval_time, scan_time, scan_hash)
         detect_visual_changes(config_section, target_url) # un commenting for testing
         time.sleep(int(interval_time)*60)
 

@@ -10,7 +10,6 @@ Future releases of Overseer will include:
 - Visual change detection
 - Alerts to email, and the ability to push data into monitoring solutions
 - Dockerisation
-- Monitoring machine statistics (Load, I/O, CPU, Memory, Disk, etc.)
 - Project Dashboard (Charts and alert handling)
 
 # Contribution
