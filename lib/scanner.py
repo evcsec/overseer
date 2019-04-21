@@ -30,7 +30,7 @@ def monitor(system_config, overseer_config, config_section):
         if scan_hash:
             scan_time = get_current_datetime()
         update_config(overseer_config, config_section, domain,
-                      target_url, server_ip, interval_time, 
+                      target_url, server_ip, interval_time,
                       scan_time, scan_hash)
         time.sleep(int(interval_time)*60)
 
@@ -40,7 +40,7 @@ def port_scan(host, domain, saved_ip):
     ports = ['80', '443', '8000', '8443', '8080', '5443', '8008', '8888']
 
     # Configure default timeout period for port scans (float)
-    socket.setdefaulttimeout(2)  # was 1.5
+    socket.setdefaulttimeout(5)  # was 1.5
     target_ip = socket.gethostbyname(domain)
     if target_ip != saved_ip:
         error_string = (host + " has detected an IP conflict. Original:" +
@@ -71,11 +71,15 @@ def web_scan(host, url, website_hash):
     try:
         # Set the headers like we are a browser
         headers = {
-            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'
+            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3)' +
+                          ' AppleWebKit/537.36 (KHTML, like Gecko)' +
+                          ' Chrome/39.0.2171.95 Safari/537.36'
             }
         response = requests.get(url, headers=headers)
-        write_log(host, 'Status Response', 'status_code = ' + str(response.status_code))
-        print("[+] Status code for " + host + " = " + str(response.status_code))
+        write_log(host, 'Status Response', 'status_code = ' +
+                  str(response.status_code))
+        print("[+] Status code for " + host + " = " +
+              str(response.status_code))
         if str(response.status_code) == "200":
             scan_hash = hash_website(str(response.json))
             # Run hash checks for the website
@@ -89,7 +93,8 @@ def web_scan(host, url, website_hash):
             # Run soup checks for the website
             scan_contents = html_diff(host, str(response.text))
             if scan_contents:
-                print('[-] Error: Website difference detected for ' + host + "!")
+                print('[-] Error: Website difference detected for ' +
+                      host + "!")
                 write_log(host, 'Error', "Difference in HTML")
             return scan_hash
     except requests.exceptions.Timeout:
@@ -143,7 +148,10 @@ def html_diff(host, website_contents):
         current_html.close()
         previous_html.close()
 
-    open("log/" + host + "/scans/" + host + ".html", "w").writelines([l for l in open("log/" + host + "/scans/" + host + ".temp", "r").readlines()])
+    open("log/" + host + "/scans/" + host +
+         ".html", "w").writelines([l for l in open("log/" + host +
+                                                   "/scans/" + host +
+                                                   ".temp", "r").readlines()])
 
     if diff:
         return diff

@@ -39,14 +39,15 @@ def send_slack_message(system_config, message):
     channel = system_config.systemconfig.get('Slack', 'channel')
 
     sc = SlackClient(slack_token)
-    sc.api_call('chat.postMessage', channel=channel, 
+    sc.api_call('chat.postMessage', channel=channel,
                 text=message, username='Overseer Bot',
                 icon_emoji=':robot_face:')
 
 
-def send_email(system_config, error_message): 
+def send_email(system_config, error_message):
     smtp_url = system_config.systemconfig.get('Email', 'smtp_url')
-    send_from_email = system_config.systemconfig.get('Email', 'send_from_email')
+    send_from_email = system_config.systemconfig.get('Email',
+                                                     'send_from_email')
     send_to_email = system_config.systemconfig.get('Email', 'send_to_email')
     username = system_config.systemconfig.get('Email', 'username')
     password = system_config.systemconfig.get('Email', 'password')
