@@ -1,7 +1,9 @@
-import smtplib, requests, date
+import smtplib
+import requests
 from slackclient import SlackClient
 from .date import get_current_datetime
 from .logger import write_log
+
 
 def send_web_alert(url, error_message):
     current_time = get_current_datetime()
@@ -31,17 +33,27 @@ def send_web_alert(url, error_message):
         print("[-] Exception Error: " + error_string)
         print(e)
 
-def send_slack_message(slack_token, message, channel):
-    token = slack_token
-    sc = SlackClient(token)
+
+def send_slack_message(system_config, message):
+    slack_token = system_config.systemconfig.get('Slack', 'slack_token')
+    channel = system_config.systemconfig.get('Slack', 'channel')
+
+    sc = SlackClient(slack_token)
     sc.api_call('chat.postMessage', channel=channel, 
                 text=message, username='Overseer Bot',
                 icon_emoji=':robot_face:')
 
-def send_email(smtp_url, send_from_email, send_to_email, password, error_message): 
+
+def send_email(system_config, error_message): 
+    smtp_url = system_config.systemconfig.get('Email', 'smtp_url')
+    send_from_email = system_config.systemconfig.get('Email', 'send_from_email')
+    send_to_email = system_config.systemconfig.get('Email', 'send_to_email')
+    username = system_config.systemconfig.get('Email', 'username')
+    password = system_config.systemconfig.get('Email', 'password')
+
     server = smtplib.SMTP(smtp_url, 587)
+    server.ehlo()
     server.starttls()
-    server.login(send_from_email, password)
-    msg = error_message
-    server.sendmail(send_from_email, send_to_email, msg)
+    server.login(username, password)
+    server.sendmail(send_from_email, send_to_email, error_message)
     server.quit()
