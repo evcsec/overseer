@@ -1,10 +1,12 @@
-import time
 from datetime import datetime
+import time
+
 
 def get_current_datetime():
     today = datetime.today()
     current_time = today.strftime('%Y-%m-%d %H:%M:%S')
     return current_time
+
 
 def get_time_diff(last_scan):
     current_time = get_current_datetime()

@@ -1,5 +1,7 @@
 from .date import get_current_datetime
-import os, time
+import os
+import time
+
 
 def write_log(host, msg_type, error_string):
     # Is file already open?
@@ -11,19 +13,19 @@ def write_log(host, msg_type, error_string):
         try:
             os.rename(log_file, log_file)
             with open(log_file, "a") as log:
-                log.write(host + ',' + str(get_current_datetime()) + ',' + msg_type + ',' + str(error_string) +'\n')
+                log.write(host + "," + str(get_current_datetime()) + "," +
+                          msg_type + "," + str(error_string) + "\n")
                 log.close()
         except OSError as e:
-            print("[-] Error: File is already open... waiting until available...")
+            print("[-] Error: File is already open... waiting until ready...")
     else:
         if not os.path.exists(log_dir):
             os.makedirs(log_dir)
             os.makedirs(scans_dir)
-        
+
         # Wait 5 seconds... then try again
         time.sleep(5)
         with open(log_file, "a") as log:
-            log.write(host + ',' + str(get_current_datetime()) + ',' + msg_type + ',' + str(error_string) +'\n')
+            log.write(host + "," + str(get_current_datetime()) + "," +
+                      msg_type + "," + str(error_string) + "\n")
             log.close()
-            
-

@@ -4,7 +4,7 @@ import validators
 
 
 class SystemConfig(object):
-    systemconfig = configparser.ConfigParser() 
+    systemconfig = configparser.ConfigParser()
 
     def __init__(self):
         if not os.path.exists('./system.ini'):
@@ -18,7 +18,7 @@ class SystemConfig(object):
         get_slack = input("<config> Would you like to configure Slack?\n> ")
         get_email = input("<config> Would you like to configure Email Alerts?\n> ")
         get_web = input("<config> Would you like to configure Web listener?\n> ")
-        
+
         if get_slack == 'y':
             slack_token = input("<slack config> Please enter Slack Token:\n>")
             channel = input("<slack config> Please enter Channel to post alert to:\n>")
@@ -80,8 +80,9 @@ class Config(object):
             self.config.read("./config.ini")
 
     def add_host(self, host, domain, target_url, interval_time):
-        self.config[host] = {'domain': domain, 'target_url': target_url, 'interval_time': interval_time, 
-                            'last_scan': '', 'target_ip': '', 'website_hash': ''}
+        self.config[host] = {'domain': domain, 'target_url': target_url,
+                             'interval_time': interval_time, 'last_scan': '',
+                             'target_ip': '', 'website_hash': ''}
         self.write_file()
 
     def set_targets(self):
@@ -142,10 +143,13 @@ def get_host_count(overseer_config):
     return count
 
 
-def update_config(overseer_config, host, domain, target_url, target_ip, interval_time, last_scan, website_hash):
-        overseer_config.config[host] = {'target_url': target_url, 'domain': domain, 
-                                        'target_ip': target_ip, 'interval_time': interval_time, 
-                                        'last_scan': last_scan, 'website_hash': website_hash 
+def update_config(overseer_config, host, domain, target_url, target_ip,
+                  interval_time, last_scan, website_hash):
+        overseer_config.config[host] = {'target_url': target_url,
+                                        'domain': domain,
+                                        'target_ip': target_ip,
+                                        'interval_time': interval_time,
+                                        'last_scan': last_scan,
+                                        'website_hash': website_hash
                                         }
         overseer_config.write_file()
-
