@@ -111,3 +111,5 @@ config.ini
 emailAlert.py
 geckodriver.log
 log/
+system.ini
+.vscode/settings.json
