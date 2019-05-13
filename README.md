@@ -7,10 +7,11 @@ To build a tool that can detect and alert on website take overs, defacements and
 
 # Vision
 Future releases of Overseer will include:
-- Visual change detection
-- Alerts to email, and the ability to push data into monitoring solutions
 - Dockerisation
-- Project Dashboard (Charts and alert handling)
+- Pretty output
+- Read CSV input for configuration
+- Rebust output handling
+- Create Project Dashboard (Charts, uptime reporting, changes detected over time overview and improved alert handling)
 
 # Contribution
 Everyone is welcome to commit and work with the authors to add functionality. This is a beginner friendly repository, so feel free to contact the authors, or dive straight in.
