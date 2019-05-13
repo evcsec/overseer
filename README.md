@@ -40,11 +40,14 @@ On first execution `python3 overseer.py` you will be asked to add the system con
 # First Run
 Some screenshots to assist you throughout executing the first run of Overseer are below, with commentary. You can use the sample configuration files provided in the project as a base, and modify this directly to skip this upfront configuration.
 ![Start Overseer and follow the prompts, entering your choice of integration](/img/SettingUpEmailConfig.png?raw=true)
+
 ![Setup Visual Driver](/img/SettingUpVisualDriver.png?raw=true)
+
 ![Setup Your Website Monitor](/img/SettingUpWebsiteConfig.png?raw=true)
 
 Your configuration should look similar to this from the above information.
 ![System Configuration](/img/SampleSystemConfiguration.png?raw=true)
+
 ![Website Configuration](/img/ExampleWebsiteSetup.png.jpg?raw=true)
 
 
