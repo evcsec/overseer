@@ -1,6 +1,6 @@
 import smtplib
 import requests
-from slackclient import SlackClient
+from slack import WebClient
 from .date import get_current_datetime
 from .logger import write_log
 
@@ -38,7 +38,7 @@ def send_slack_message(system_config, message):
     slack_token = system_config.systemconfig.get('Slack', 'slack_token')
     channel = system_config.systemconfig.get('Slack', 'channel')
 
-    sc = SlackClient(slack_token)
+    sc = WebClient(slack_token)
     sc.api_call('chat.postMessage', channel=channel,
                 text=message, username='Overseer Bot',
                 icon_emoji=':robot_face:')

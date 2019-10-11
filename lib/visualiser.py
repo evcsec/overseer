@@ -47,7 +47,7 @@ def website_screenshot(system_config, host, target_url):
         if driver_type == "chrome":
             driver_options = webdriver.ChromeOptions()
             driver_options.add_argument('headless')
-            driver = webdriver.Chrome(driver_location, options=driver_options)
+            driver = webdriver.Chrome(executable_path=driver_location, options=driver_options)
         elif driver_type == "gecko":
             driver = webdriver.Firefox(executable_path=driver_location)
         driver.set_window_size(1024, 768)
