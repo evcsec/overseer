@@ -7,7 +7,7 @@ To build a tool that can detect and alert on website take overs, defacements and
 
 # Vision
 Future releases of Overseer will include:
-- Standardise on ChromeDriver and bundle with this
+- Standardise on ChromeDriver and bundle into the tool
 - Read CSV input for configuration
 - Create Project Dashboard (Charts, uptime reporting, changes detected over time overview and improved alert handling)
 
