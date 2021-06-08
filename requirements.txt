@@ -1,6 +1,6 @@
 selenium==3.14.1
 bs4==0.0.1
-pillow==6.2.0
+pillow==8.2.0
 validators==0.14.0
 requests==2.22.0
 slackclient==2.2.1
